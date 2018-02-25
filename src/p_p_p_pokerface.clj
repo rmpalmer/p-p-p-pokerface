@@ -44,10 +44,8 @@
         gcomp (range gv (+ gv 5))]
     (or (= fcomp fvals) (= gcomp gvals))))
 
-(straight? ["KH" "QS" "JC" "9H" "AD"])
-
 (defn straight-flush? [hand]
-  nil)
+  (and (straight? hand) (flush? hand)))
 
 (defn value [hand]
   nil)
