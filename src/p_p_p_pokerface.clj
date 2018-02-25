@@ -11,25 +11,40 @@
   (str (get card 1)))
 
 (defn pair? [hand]
-  (>= (apply max (vals (frequencies (map rank hand)))) 2))
+  (= (apply max (vals (frequencies (map rank hand)))) 2))
 
 (defn three-of-a-kind? [hand]
-  (>= (apply max (vals (frequencies (map rank hand)))) 3))
+  (= (apply max (vals (frequencies (map rank hand)))) 3))
 
 (defn four-of-a-kind? [hand]
-  (>= (apply max (vals (frequencies (map rank hand)))) 4))
+  (= (apply max (vals (frequencies (map rank hand)))) 4))
 
 (defn flush? [hand]
   (= (count (set (map suit hand))) 1))
 
 (defn full-house? [hand]
-  nil)
+  (let [counts (sort (vals (frequencies (map rank hand))))]
+    (= counts (range 2 4))))
+
+(full-house? ["2H" "4S" "2C" "3H" "3D"])
 
 (defn two-pairs? [hand]
-  nil)
+  (let [counts (sort (vals (frequencies (map rank hand))))
+        table (frequencies counts)]
+    (= (table 2) 2)))
+
+(two-pairs? ["2H" "2S" "2C" "3H" "3D"])
 
 (defn straight? [hand]
-  nil)
+  (let [fvals (sort (map rank hand))
+        gvals (sort (replace {14 1} (map rank hand)))
+        fv (first fvals)
+        gv (first gvals)
+        fcomp (range fv (+ fv 5))
+        gcomp (range gv (+ gv 5))]
+    (or (= fcomp fvals) (= gcomp gvals))))
+
+(straight? ["KH" "QS" "JC" "9H" "AD"])
 
 (defn straight-flush? [hand]
   nil)
